@@ -6,6 +6,8 @@
  */
 # include "oled.hpp"
 
+bool IsDMAAvailable = true;
+
 void SSD1315::SendCMD_DMA(uint8_t *cmd, uint8_t len){
 	while(IsDMAAvailable == false);
 	IsDMAAvailable = false;
@@ -351,3 +353,8 @@ void SSD1315::OLED_DrawFilledCircle(uint8_t x, uint8_t y, uint8_t r, OLED_ColorM
 }
 
 
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c){
+	if(hi2c == &hi2c1){
+		IsDMAAvailable = true;
+	}
+}

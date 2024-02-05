@@ -20,11 +20,12 @@
 #include "main.h"
 #include "dma.h"
 #include "i2c.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "oled.hpp"
+#include "logic_core.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +46,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-bool IsDMAAvailable = true;
+
+bool shouldCheck = false;
+bool shouldRefresh = false;
+uint16_t timCount = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,9 +61,16 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c){
-	if(hi2c == &hi2c1){
-		IsDMAAvailable = true;
+
+// 25ms�????次的时钟信号
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(htim->Instance == TIM2){
+		shouldRefresh = true;
+		if(timCount >= 40){
+			shouldCheck = true;
+			timCount = 0;
+		}
+		timCount++;
 	}
 }
 /* USER CODE END 0 */
@@ -93,17 +105,29 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2C1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  LogicCore *core = new LogicCore();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  SSD1315 OLED(HORIZENTAL_MODE);
-  OLED.TestScreen();
+
+  HAL_TIM_Base_Start_IT(&htim2);
   while (1)
   {
+	  if(shouldRefresh){
+		  core->renewAll();
+		  core->clrScreen();
+		  core->drawAll();
+		  core->refreshScreen();
+		  shouldRefresh = false;
+	  }
 
+	  if(shouldCheck){
+		  core->checkAll();
+		  shouldCheck = false;
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

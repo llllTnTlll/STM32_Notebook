@@ -9,36 +9,79 @@
 #define INC_GAME_HPP_
 
 #include "font.h"
-#include "math.h"
+#include <cmath>
 
-#define TIME_STEP 20
+#define TIME_STEP_MS 25
 
 class GameObj{
-private:
-	void checkLifeCircle();
 protected:
 	uint8_t width = 0;
 	uint8_t height = 0;
 	uint8_t current_loc[2] = {0, 0};
 
-	uint8_t speed[2] = {0, 0};
-	uint8_t acceleration[2] = {0, 0};
+	int16_t speed[2] = {0, 0};
+	int16_t acceleration[2] = {0, 0};
+	uint8_t refreshInterval[2] = {0, 0};
+	uint8_t step = 1;
+
+	bool shouldReclaim = false;
+
+	void recalcuLoc(uint8_t& currentLoc, uint8_t& refreshInterval, int16_t& speed);
+	void updateReclaimFlag();
 public:
 	void setLocation(uint8_t x, uint8_t y);
-	void refreshObj();
-	virtual Image getHexImg();
+	void setSpeed(int16_t speedX, int16_t speedY);
+
+	uint8_t getLocationX();
+	uint8_t getLocationY();
+	bool getReclaimFlag();
+	virtual const Image* getHexImg();
+
+	void recalcuProperties();
 };
+
+inline uint8_t GameObj::getLocationX(){
+	return current_loc[0];
+}
+
+inline uint8_t GameObj::getLocationY(){
+	return current_loc[1];
+}
+
+inline bool GameObj::getReclaimFlag(){
+	return shouldReclaim;
+}
+
+inline void GameObj::setSpeed(int16_t speedX, int16_t speedY){
+	speed[0] = speedX;
+	speed[1] = speedY;
+}
+
+inline void GameObj::setLocation(uint8_t x, uint8_t y){
+	current_loc[0] = x;
+	current_loc[1] = y;
+}
+
+inline const Image* GameObj::getHexImg(){
+	// TODO改成一个占位符
+	return &cloudImg;
+}
 
 class Cloud : public GameObj{
 public:
-	Cloud(uint8_t x, uint8_t y){
+	Cloud(uint8_t* loc, int16_t* speedXY){
 		width = 30;
 		height = 10;
-		speed[0] = -3;
 		speed[0] = 0;
-		setLocation(x, y);
+		speed[1] = 0;
+		setLocation(loc[0], loc[1]);
+		setSpeed(speedXY[0], speedXY[1]);
 	}
 
-	Image getHexImg() override;
+	const Image* getHexImg() override;
 };
+
+inline const Image* Cloud::getHexImg(){
+	return &cloudImg;
+}
 #endif /* INC_GAME_HPP_ */
