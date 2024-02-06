@@ -20,7 +20,12 @@ void SSD1315::SendDTA_DMA(uint8_t *data, uint32_t len){
 	HAL_I2C_Mem_Write_DMA(&hi2c1, OLED_ADDRESS, 0x40, I2C_MEMADD_SIZE_8BIT, data, len);
 }
 
-void SSD1315::ShowFrame(){
+void SSD1315::ShowFrame(bool showFrameRate){
+	//判断是否需要输出当前帧率
+	if(showFrameRate){
+		OLED_PrintASCIIString(1, 1, &std::to_string(OLED_FRAME_RATE)[0], &afont8x6, OLED_COLOR_NORMAL);
+	}
+	// 将显存发送至显示器
 	if(MODE_NOW == HORIZENTAL_MODE){
 		uint8_t oledHorAdrCMD[6] = {0x21, 0, 127, 0x22, 0, 7};
 		SendCMD_DMA(oledHorAdrCMD, sizeof(oledHorAdrCMD));
@@ -39,6 +44,7 @@ void SSD1315::ShowFrame(){
 			SendDTA_DMA(sendBuffer, OLED_COLUMN);
 		}
 	}
+	OLED_FRAME_COUNT_PER_SEC++;
 }
 
 void SSD1315::TestScreen(){
@@ -65,6 +71,11 @@ void SSD1315::OLED_Init(ADDRESSING_MODE mode){
 
 void SSD1315::ClearFrame(){
 	memset(OLED_GRAM, 0, sizeof(OLED_GRAM));
+}
+
+void SSD1315::UpdateFrameRate(){
+	OLED_FRAME_RATE = OLED_FRAME_COUNT_PER_SEC;
+	OLED_FRAME_COUNT_PER_SEC = 0;
 }
 
 void SSD1315::OLED_DrawImage(uint8_t x, uint8_t y, const Image *img, OLED_ColorMode color) {

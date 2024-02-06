@@ -11,7 +11,7 @@
 #include "font.h"
 #include <cmath>
 
-#define TIME_STEP_MS 25
+#define TIME_STEP_MS 10
 
 class GameObj{
 protected:
@@ -22,45 +22,36 @@ protected:
 	int16_t speed[2] = {0, 0};
 	int16_t acceleration[2] = {0, 0};
 	uint8_t refreshInterval[2] = {0, 0};
-	uint8_t step = 1;
+	uint8_t step = 2;
 
 	bool shouldReclaim = false;
 
 	void recalcuLoc(uint8_t& currentLoc, uint8_t& refreshInterval, int16_t& speed);
 	void updateReclaimFlag();
 public:
-	void setLocation(uint8_t x, uint8_t y);
-	void setSpeed(int16_t speedX, int16_t speedY);
+	inline void setLocation(uint8_t x, uint8_t y){
+		current_loc[0] = x;
+		current_loc[1] = y;
+	}
+	inline void setSpeed(int16_t speedX, int16_t speedY){
+		speed[0] = speedX;
+		speed[1] = speedY;
+	}
 
-	uint8_t getLocationX();
-	uint8_t getLocationY();
-	bool getReclaimFlag();
+	inline uint8_t getLocationX(){
+		return current_loc[0];
+	}
+	inline uint8_t getLocationY(){
+		return current_loc[1];
+	}
+	inline bool getReclaimFlag(){
+		return shouldReclaim;
+	}
 	virtual const Image* getHexImg();
 
 	void recalcuProperties();
 };
 
-inline uint8_t GameObj::getLocationX(){
-	return current_loc[0];
-}
-
-inline uint8_t GameObj::getLocationY(){
-	return current_loc[1];
-}
-
-inline bool GameObj::getReclaimFlag(){
-	return shouldReclaim;
-}
-
-inline void GameObj::setSpeed(int16_t speedX, int16_t speedY){
-	speed[0] = speedX;
-	speed[1] = speedY;
-}
-
-inline void GameObj::setLocation(uint8_t x, uint8_t y){
-	current_loc[0] = x;
-	current_loc[1] = y;
-}
 
 inline const Image* GameObj::getHexImg(){
 	// TODO改成一个占位符

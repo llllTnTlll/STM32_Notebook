@@ -41,10 +41,9 @@ typedef enum {
 
 class SSD1315{
 private:
-	ADDRESSING_MODE MODE_NOW = PAGE_MODE;
-
+	ADDRESSING_MODE MODE_NOW = PAGE_MODE;              // 当前寻址模式
 	uint16_t OLED_FRAME_RATE = 0;                      // 当前OLED帧数值
-
+	uint16_t OLED_FRAME_COUNT_PER_SEC = 0;
 	uint8_t OLED_GRAM[OLED_PAGE][OLED_COLUMN] = {0};   // 显示缓存
 
 	// 用于初始化SSD1315的基本命令（不包括寻址模式指定）
@@ -83,8 +82,9 @@ public:
 	SSD1315(ADDRESSING_MODE mode){
 		OLED_Init(mode);
 	}
-	void ShowFrame();
+	void ShowFrame(bool showFrameRate = false);
 	void ClearFrame();
+	void UpdateFrameRate();
 
 	void TestScreen();
 

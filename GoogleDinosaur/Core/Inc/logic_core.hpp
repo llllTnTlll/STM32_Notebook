@@ -38,11 +38,14 @@ public:
 	void drawAll();     //绘制容器中存储的对象
 	void checkAll();    //检查所有物体生命周期 生成或回收对象
 
-	void clrScreen(){
+	inline void clrScreen(){
 		oled->ClearFrame();
 	}
-	void refreshScreen(){
-		oled->ShowFrame();
+	inline void refreshScreen(){
+		oled->ShowFrame(true);
+	}
+	inline void updateFrameRate(){
+		oled->UpdateFrameRate();
 	}
 };
 
