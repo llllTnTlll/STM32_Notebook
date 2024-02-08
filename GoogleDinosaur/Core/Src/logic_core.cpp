@@ -48,8 +48,7 @@ void LogicCore::checkAll(){
 
 	//百分之20的概率生成一朵云
 	if(withXPercentProbability(20)){
-		//int16_t speed[2] = {randomInt16(-90, -30), 0};
-		int16_t speed[2] = {-90, 0};
+		SPEED_MODE speed[2] = {NEGATIVE_SLOW, STATIC};
 		uint8_t loc[2] = {OLED_COLUMN, static_cast<uint8_t>(randomInt16(8, 20))};
 		Cloud *cloud = new Cloud(loc, speed);
 		backgroundObjs.push_back(cloud);

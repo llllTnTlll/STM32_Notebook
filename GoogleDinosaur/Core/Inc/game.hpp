@@ -10,8 +10,32 @@
 
 #include "font.h"
 #include <cmath>
+#include <list>
 
 #define TIME_STEP_MS 10
+
+enum SPEED_MODE{
+	NEGATIVE_SUPER_FAST,
+	NEGATIVE_FAST,
+	NEGATIVE_NORMAL,
+	NEGATIVE_SLOW,
+	NEGATIVE_SUPER_SLOW,
+	STATIC,
+	POSITIVE_SUPER_SLOW,
+	POSITIVE_SLOW,
+	POSITIVE_NORMAL,
+	POSITIVE_FAST,
+	POSITIVE_SUPER_FAST,
+};
+
+struct speedNode{
+	SPEED_MODE mode;
+	uint8_t interval;
+	int8_t step;
+	speedNode(SPEED_MODE M, uint8_t i, int8_t s):mode(M),interval(i),step(s){}
+};
+
+extern std::list<speedNode> SPEED;
 
 class GameObj{
 protected:
@@ -19,23 +43,20 @@ protected:
 	uint8_t height = 0;
 	uint8_t current_loc[2] = {0, 0};
 
-	int16_t speed[2] = {0, 0};
-	int16_t acceleration[2] = {0, 0};
-	uint8_t refreshInterval[2] = {0, 0};
-	uint8_t step = 2;
+	SPEED_MODE speed[2] = {STATIC, STATIC};
+	uint8_t currentInterval[2] = {1, 1};
 
 	bool shouldReclaim = false;
-
-	void recalcuLoc(uint8_t& currentLoc, uint8_t& refreshInterval, int16_t& speed);
 	void updateReclaimFlag();
+	void takeMove(uint8_t axisIndex);
 public:
 	inline void setLocation(uint8_t x, uint8_t y){
 		current_loc[0] = x;
 		current_loc[1] = y;
 	}
-	inline void setSpeed(int16_t speedX, int16_t speedY){
-		speed[0] = speedX;
-		speed[1] = speedY;
+	inline void setSpeed(SPEED_MODE speed_x, SPEED_MODE speed_y){
+		speed[0] = speed_x;
+		speed[1] = speed_y;
 	}
 
 	inline uint8_t getLocationX(){
@@ -47,32 +68,24 @@ public:
 	inline bool getReclaimFlag(){
 		return shouldReclaim;
 	}
-	virtual const Image* getHexImg();
-
+	inline virtual const Image* getHexImg(){
+		return &cloudImg;
+	}
 	void recalcuProperties();
 };
 
-
-inline const Image* GameObj::getHexImg(){
-	// TODO改成一个占位符
-	return &cloudImg;
-}
-
 class Cloud : public GameObj{
 public:
-	Cloud(uint8_t* loc, int16_t* speedXY){
+	Cloud(uint8_t* loc, SPEED_MODE* speed){
 		width = 30;
 		height = 10;
-		speed[0] = 0;
-		speed[1] = 0;
 		setLocation(loc[0], loc[1]);
-		setSpeed(speedXY[0], speedXY[1]);
+		setSpeed(speed[0], speed[1]);
 	}
 
-	const Image* getHexImg() override;
+	inline const Image* getHexImg() override{
+		return &cloudImg;
+	}
 };
 
-inline const Image* Cloud::getHexImg(){
-	return &cloudImg;
-}
 #endif /* INC_GAME_HPP_ */
