@@ -27,26 +27,25 @@ enum SPEED_MODE{
 	POSITIVE_FAST,
 	POSITIVE_SUPER_FAST,
 };
-
-struct speedNode{
-	SPEED_MODE mode;
-	uint8_t interval;
-	int8_t step;
-	speedNode(SPEED_MODE M, uint8_t i, int8_t s):mode(M),interval(i),step(s){}
-};
-
-extern std::list<speedNode> SPEED;
-
 class GameObj{
 protected:
+	// 基本属性
 	uint8_t width = 0;
 	uint8_t height = 0;
 	uint8_t current_loc[2] = {0, 0};
-
-	SPEED_MODE speed[2] = {STATIC, STATIC};
 	uint8_t currentInterval[2] = {1, 1};
-
 	bool shouldReclaim = false;
+
+	// 速度相关
+	SPEED_MODE speed[2] = {STATIC, STATIC};
+	struct speedNode{
+		SPEED_MODE mode;
+		uint8_t interval;
+		int8_t step;
+		speedNode(SPEED_MODE M, uint8_t i, int8_t s):mode(M),interval(i),step(s){}
+	};
+	static std::list<speedNode> SPEED;
+
 	void updateReclaimFlag();
 	void takeMove(uint8_t axisIndex);
 public:

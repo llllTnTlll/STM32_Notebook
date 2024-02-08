@@ -6,19 +6,19 @@
  */
 #include "game.hpp"
 
-std::list<speedNode> SPEED = {
-				{NEGATIVE_SUPER_FAST,1,-3},
-				{NEGATIVE_FAST,1,-2},
-				{NEGATIVE_NORMAL,1,-1},
-				{NEGATIVE_SLOW,2,-1},
-				{NEGATIVE_SUPER_SLOW,3,-1},
-				{STATIC, 255, 0},
-				{POSITIVE_SUPER_SLOW,3,1},
-				{POSITIVE_SLOW,2,1},
-				{POSITIVE_NORMAL,1,1},
-				{POSITIVE_FAST,1,2},
-				{POSITIVE_SUPER_FAST,1,3},
-		};
+std::list<GameObj::speedNode> GameObj::SPEED = {
+		{NEGATIVE_SUPER_FAST,1,-3},
+		{NEGATIVE_FAST,1,-2},
+		{NEGATIVE_NORMAL,1,-1},
+		{NEGATIVE_SLOW,2,-1},
+		{NEGATIVE_SUPER_SLOW,3,-1},
+		{STATIC, 255, 0},
+		{POSITIVE_SUPER_SLOW,3,1},
+		{POSITIVE_SLOW,2,1},
+		{POSITIVE_NORMAL,1,1},
+		{POSITIVE_FAST,1,2},
+		{POSITIVE_SUPER_FAST,1,3},
+};
 
 
 void GameObj::updateReclaimFlag(){

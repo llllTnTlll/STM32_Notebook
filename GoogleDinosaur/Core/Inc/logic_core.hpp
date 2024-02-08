@@ -10,9 +10,9 @@
 
 #include "game.hpp"
 #include "oled.hpp"
+#include "random.hpp"
 #include <string>
 #include <algorithm>
-#include <random>
 
 class LogicCore{
 private:
@@ -24,14 +24,12 @@ private:
 	std::vector<GameObj*> foregroundObjs;    //关键物体容器
 
 	// 随机数生成引擎
-    std::random_device rd;
-    std::mt19937 gen;
-    int16_t randomInt16(int16_t begin, int16_t end);
-	bool withXPercentProbability(uint8_t prob);
+    Random *rand;
 
 public:
 	LogicCore(){
 		oled = new SSD1315(PAGE_MODE);
+		rand = new Random();
 	}
 
 	void renewAll();    //将容器中的所有对象的加速度速度以及位置更新至下一帧状态

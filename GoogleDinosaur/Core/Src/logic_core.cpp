@@ -7,18 +7,6 @@
 
 #include "logic_core.hpp"
 
-
-bool LogicCore::withXPercentProbability(uint8_t prob){
-	if(randomInt16(0, 100) <= prob)
-		return true;
-	return false;
-}
-
-int16_t LogicCore::randomInt16(int16_t begin, int16_t end){
-	std::uniform_int_distribution<int16_t> dis(begin, end);
-	return dis(gen);
-}
-
 void LogicCore::renewAll(){
 	for(GameObj* obj : backgroundObjs){
 		obj->recalcuProperties();
@@ -47,9 +35,9 @@ void LogicCore::checkAll(){
 		                    foregroundObjs.end());
 
 	//百分之20的概率生成一朵云
-	if(withXPercentProbability(20)){
-		SPEED_MODE speed[2] = {NEGATIVE_SLOW, STATIC};
-		uint8_t loc[2] = {OLED_COLUMN, static_cast<uint8_t>(randomInt16(8, 20))};
+	if(rand->withXPercentProbability(20)){
+		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC};
+		uint8_t loc[2] = {OLED_COLUMN, static_cast<uint8_t>(rand->getRandomInt16(8, 20))};
 		Cloud *cloud = new Cloud(loc, speed);
 		backgroundObjs.push_back(cloud);
 	}
