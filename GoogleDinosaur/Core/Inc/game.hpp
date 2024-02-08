@@ -87,4 +87,19 @@ public:
 	}
 };
 
+class Cactus : public GameObj{
+private:
+	static SPEED_MODE speed[2];
+public:
+	Cactus(uint8_t* loc, SPEED_MODE* speed){
+		width = 8;
+		height = 18;
+		setLocation(loc[0], loc[1]);
+		setSpeed(speed[0], speed[1]);
+	}
+	inline const Image* getHexImg() override{
+		return &cactusImg;
+	}
+};
+
 #endif /* INC_GAME_HPP_ */

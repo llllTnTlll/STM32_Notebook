@@ -49,4 +49,5 @@ void GameObj::takeMove(uint8_t axisIndex){
 	}
 }
 
+SPEED_MODE Cactus::speed[2] = {STATIC, STATIC};
 

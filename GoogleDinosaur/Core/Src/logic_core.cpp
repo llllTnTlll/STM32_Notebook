@@ -36,9 +36,16 @@ void LogicCore::checkAll(){
 
 	//百分之20的概率生成一朵云
 	if(rand->withXPercentProbability(20)){
-		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC};
+		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(2, 4)), STATIC};
 		uint8_t loc[2] = {OLED_COLUMN, static_cast<uint8_t>(rand->getRandomInt16(8, 20))};
 		Cloud *cloud = new Cloud(loc, speed);
 		backgroundObjs.push_back(cloud);
+	}
+	//百分之20的概率生成一个仙人掌
+	if(rand->withXPercentProbability(20)){
+		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC};
+		uint8_t loc[2] = {OLED_COLUMN, 40};
+		Cactus *cactus = new Cactus(loc, speed);
+		foregroundObjs.push_back(cactus);
 	}
 }

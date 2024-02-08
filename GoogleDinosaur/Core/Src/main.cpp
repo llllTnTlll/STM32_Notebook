@@ -67,6 +67,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM2){
 		shouldRefresh = true;
 	}
+
 	if(htim->Instance == TIM3){
 		shouldCheck = true;
 		core->updateFrameRate();
