@@ -35,9 +35,14 @@ enum ADDRESSING_MODE{
 };
 
 typedef enum {
-  OLED_COLOR_NORMAL = 0, // 正常模式 黑底白字
-  OLED_COLOR_REVERSED = 1   // 反色模式 白底黑字
+	OLED_COLOR_NORMAL = 0, // 正常模式 黑底白字
+    OLED_COLOR_REVERSED = 1   // 反色模式 白底黑字
 } OLED_ColorMode;
+
+typedef enum{
+	COVER = 0,
+	OVERLAY = 1,
+} OLED_DrawMode;
 
 class SSD1315{
 private:
@@ -69,11 +74,11 @@ private:
 	void SendDTA_DMA(uint8_t *cmd, uint32_t len);
 
 	void OLED_SetPixel(uint8_t x, uint8_t y, OLED_ColorMode color);
-	void OLED_SetByte_Fine(uint8_t page, uint8_t column, uint8_t data, uint8_t start, uint8_t end, OLED_ColorMode color);
+	void OLED_SetByte_Fine(uint8_t page, uint8_t column, uint8_t data, uint8_t start, uint8_t end, OLED_ColorMode color, OLED_DrawMode mode);
 	void OLED_SetByte(uint8_t page, uint8_t column, uint8_t data, OLED_ColorMode color);
-	void OLED_SetBits_Fine(uint8_t x, uint8_t y, uint8_t data, uint8_t len, OLED_ColorMode color);
-	void OLED_SetBits(uint8_t x, uint8_t y, uint8_t data, OLED_ColorMode color);
-	void OLED_SetBlock(uint8_t x, uint8_t y, const uint8_t *data, uint8_t w, uint8_t h, OLED_ColorMode color);
+	void OLED_SetBits_Fine(uint8_t x, uint8_t y, uint8_t data, uint8_t len, OLED_ColorMode color, OLED_DrawMode mode);
+	void OLED_SetBits(uint8_t x, uint8_t y, uint8_t data, OLED_ColorMode color, OLED_DrawMode mode);
+	void OLED_SetBlock(uint8_t x, uint8_t y, const uint8_t *data, uint8_t w, uint8_t h, OLED_ColorMode color, OLED_DrawMode mode = COVER);
 
 	void OLED_Init(ADDRESSING_MODE mode);
 
@@ -90,7 +95,7 @@ public:
 
 	void SwitchAdrMode(ADDRESSING_MODE mode);
 
-	void OLED_DrawImage(uint8_t x, uint8_t y, const Image *img, OLED_ColorMode color);
+	void OLED_DrawImage(uint8_t x, uint8_t y, const Image *img, OLED_ColorMode color, OLED_DrawMode mode);
 	void OLED_DrawCircle(uint8_t x, uint8_t y, uint8_t r, OLED_ColorMode color);
 	void OLED_DrawFilledCircle(uint8_t x, uint8_t y, uint8_t r, OLED_ColorMode color);
 

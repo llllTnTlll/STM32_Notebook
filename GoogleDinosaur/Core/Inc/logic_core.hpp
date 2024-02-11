@@ -30,6 +30,9 @@ public:
 	LogicCore(){
 		oled = new SSD1315(PAGE_MODE);
 		rand = new Random();
+
+		Dino *dino = new Dino();
+		foregroundObjs.push_back(dino);
 	}
 
 	void renewAll();    //将容器中的所有对象的加速度速度以及位置更新至下一帧状态

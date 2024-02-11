@@ -47,13 +47,14 @@ protected:
 	static std::list<speedNode> SPEED;
 
 	void updateReclaimFlag();
-	void takeMove(uint8_t axisIndex);
+	void initProperties();
+	virtual void takeMove(uint8_t axisIndex);
 public:
 	inline void setLocation(uint8_t x, uint8_t y){
 		current_loc[0] = x;
 		current_loc[1] = y;
 	}
-	inline void setSpeed(SPEED_MODE speed_x, SPEED_MODE speed_y){
+	inline virtual void setSpeed(SPEED_MODE speed_x, SPEED_MODE speed_y){
 		speed[0] = speed_x;
 		speed[1] = speed_y;
 	}
@@ -76,8 +77,7 @@ public:
 class Cloud : public GameObj{
 public:
 	Cloud(uint8_t* loc, SPEED_MODE* speed){
-		width = 30;
-		height = 10;
+		initProperties();
 		setLocation(loc[0], loc[1]);
 		setSpeed(speed[0], speed[1]);
 	}
@@ -91,14 +91,34 @@ class Cactus : public GameObj{
 private:
 	static SPEED_MODE speed[2];
 public:
-	Cactus(uint8_t* loc, SPEED_MODE* speed){
-		width = 8;
-		height = 18;
-		setLocation(loc[0], loc[1]);
-		setSpeed(speed[0], speed[1]);
+	Cactus(){
+		initProperties();
+		setLocation(128, 64-height);
 	}
 	inline const Image* getHexImg() override{
 		return &cactusImg;
+	}
+
+	void takeMove(uint8_t axisIndex) override;
+	inline void setSpeed(SPEED_MODE speed_x, SPEED_MODE speed_y) override{
+		// do nothing
+	}
+	static void setSpeedALL(SPEED_MODE speed_x, SPEED_MODE speed_y){
+		Cactus::speed[0] = speed_x;
+		Cactus::speed[1] = speed_y;
+	}
+};
+
+class Dino : public GameObj{
+public:
+	Dino(){
+		initProperties();
+		setLocation(3, 64-height);
+		setSpeed(STATIC, STATIC);
+	}
+
+	inline const Image* getHexImg() override{
+		return &dino1Img;
 	}
 };
 

@@ -78,8 +78,8 @@ void SSD1315::UpdateFrameRate(){
 	OLED_FRAME_COUNT_PER_SEC = 0;
 }
 
-void SSD1315::OLED_DrawImage(uint8_t x, uint8_t y, const Image *img, OLED_ColorMode color) {
-  OLED_SetBlock(x, y, img->data, img->w, img->h, color);
+void SSD1315::OLED_DrawImage(uint8_t x, uint8_t y, const Image *img, OLED_ColorMode color, OLED_DrawMode mode) {
+  OLED_SetBlock(x, y, img->data, img->w, img->h, color, mode);
 }
 
 /**
@@ -109,13 +109,15 @@ void SSD1315::OLED_SetPixel(uint8_t x, uint8_t y, OLED_ColorMode color) {
  * @note start和end的范围为0-7, start必须小于等于end
  * @note 此函数与OLED_SetByte_Fine的区别在于此函数只能设置显存中的某一真实字节
  */
-void SSD1315::OLED_SetByte_Fine(uint8_t page, uint8_t column, uint8_t data, uint8_t start, uint8_t end, OLED_ColorMode color) {
+void SSD1315::OLED_SetByte_Fine(uint8_t page, uint8_t column, uint8_t data, uint8_t start, uint8_t end, OLED_ColorMode color, OLED_DrawMode mode) {
   static uint8_t temp;
   if (page >= OLED_PAGE || column >= OLED_COLUMN) return;
   if (color) data = ~data;
 
-  temp = data | (0xff << (end + 1)) | (0xff >> (8 - start));
-  OLED_GRAM[page][column] &= temp;
+  if(mode == COVER){
+	  temp = data | (0xff << (end + 1)) | (0xff >> (8 - start));
+	  OLED_GRAM[page][column] &= temp;
+  }
   temp = data & ~(0xff << (end + 1)) & ~(0xff >> (8 - start));
   OLED_GRAM[page][column] |= temp;
   // 使用OLED_SetPixel实现
@@ -149,14 +151,14 @@ void SSD1315::OLED_SetByte(uint8_t page, uint8_t column, uint8_t data, OLED_Colo
  * @note len的范围为1-8
  * @note 此函数与OLED_SetByte_Fine的区别在于此函数的横坐标和纵坐标是以像素为单位的, 可能出现跨两个真实字节的情况(跨页)
  */
-void SSD1315::OLED_SetBits_Fine(uint8_t x, uint8_t y, uint8_t data, uint8_t len, OLED_ColorMode color) {
+void SSD1315::OLED_SetBits_Fine(uint8_t x, uint8_t y, uint8_t data, uint8_t len, OLED_ColorMode color, OLED_DrawMode mode) {
   uint8_t page = y / 8;
   uint8_t bit = y % 8;
   if (bit + len > 8) {
-    OLED_SetByte_Fine(page, x, data << bit, bit, 7, color);
-    OLED_SetByte_Fine(page + 1, x, data >> (8 - bit), 0, len + bit - 1 - 8, color);
+    OLED_SetByte_Fine(page, x, data << bit, bit, 7, color, mode);
+    OLED_SetByte_Fine(page + 1, x, data >> (8 - bit), 0, len + bit - 1 - 8, color, mode);
   } else {
-    OLED_SetByte_Fine(page, x, data << bit, bit, bit + len - 1, color);
+    OLED_SetByte_Fine(page, x, data << bit, bit, bit + len - 1, color, mode);
   }
   // 使用OLED_SetPixel实现
   // for (uint8_t i = 0; i < len; i++) {
@@ -173,12 +175,12 @@ void SSD1315::OLED_SetBits_Fine(uint8_t x, uint8_t y, uint8_t data, uint8_t len,
  * @note 此函数将显存中从(x,y)开始向下数8位设置为与data相同
  * @note 此函数与OLED_SetByte的区别在于此函数的横坐标和纵坐标是以像素为单位的, 可能出现跨两个真实字节的情况(跨页)
  */
-void SSD1315::OLED_SetBits(uint8_t x, uint8_t y, uint8_t data, OLED_ColorMode color) {
+void SSD1315::OLED_SetBits(uint8_t x, uint8_t y, uint8_t data, OLED_ColorMode color, OLED_DrawMode mode) {
   uint8_t page = y / 8;
   uint8_t bit = y % 8;
-  OLED_SetByte_Fine(page, x, data << bit, bit, 7, color);
+  OLED_SetByte_Fine(page, x, data << bit, bit, 7, color, mode);
   if (bit) {
-    OLED_SetByte_Fine(page + 1, x, data >> (8 - bit), 0, bit - 1, color);
+    OLED_SetByte_Fine(page + 1, x, data >> (8 - bit), 0, bit - 1, color, mode);
   }
 }
 
@@ -193,18 +195,18 @@ void SSD1315::OLED_SetBits(uint8_t x, uint8_t y, uint8_t data, OLED_ColorMode co
  * @note 此函数将显存中从(x,y)开始的w*h个像素设置为data中的数据
  * @note data的数据应该采用列行式排列
  */
-void SSD1315::OLED_SetBlock(uint8_t x, uint8_t y, const uint8_t *data, uint8_t w, uint8_t h, OLED_ColorMode color) {
+void SSD1315::OLED_SetBlock(uint8_t x, uint8_t y, const uint8_t *data, uint8_t w, uint8_t h, OLED_ColorMode color, OLED_DrawMode mode) {
   uint8_t fullRow = h / 8; // 完整的行数
   uint8_t partBit = h % 8; // 不完整的字节中的有效位数
   for (uint8_t i = 0; i < w; i++) {
     for (uint8_t j = 0; j < fullRow; j++) {
-      OLED_SetBits(x + i, y + j * 8, data[i + j * w], color);
+      OLED_SetBits(x + i, y + j * 8, data[i + j * w], color, mode);
     }
   }
   if (partBit) {
     uint16_t fullNum = w * fullRow; // 完整的字节数
     for (uint8_t i = 0; i < w; i++) {
-      OLED_SetBits_Fine(x + i, y + (fullRow * 8), data[fullNum + i], partBit, color);
+      OLED_SetBits_Fine(x + i, y + (fullRow * 8), data[fullNum + i], partBit, color, mode);
     }
   }
   // 使用OLED_SetPixel实现

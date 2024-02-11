@@ -27,6 +27,11 @@ void GameObj::updateReclaimFlag(){
 	}
 }
 
+void GameObj::initProperties(){
+	height = getHexImg()->h;
+	width = getHexImg()->w;
+}
+
 void GameObj::recalcuProperties(){
 	if(!shouldReclaim){
 		currentInterval[0]--;
@@ -42,12 +47,20 @@ void GameObj::recalcuProperties(){
 
 void GameObj::takeMove(uint8_t axisIndex){
 	for (const auto& node : SPEED) {
-		if (node.mode == speed[axisIndex]){
+		if (node.mode == static_cast<SPEED_MODE>(speed[axisIndex])){
 			currentInterval[axisIndex] = node.interval;
 			current_loc[axisIndex] += node.step;
 		}
 	}
 }
 
-SPEED_MODE Cactus::speed[2] = {STATIC, STATIC};
+SPEED_MODE Cactus::speed[2] = {NEGATIVE_SLOW, STATIC};
 
+void Cactus::takeMove(uint8_t axisIndex){
+	for (const auto& node : SPEED) {
+	    if (node.mode == static_cast<SPEED_MODE>(Cactus::speed[axisIndex])){
+	    	currentInterval[axisIndex] = node.interval;
+	    	current_loc[axisIndex] += node.step;
+	    }
+	}
+}

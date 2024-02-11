@@ -18,10 +18,10 @@ void LogicCore::renewAll(){
 
 void LogicCore::drawAll(){
 	for(GameObj* obj : backgroundObjs){
-		oled->OLED_DrawImage(obj->getLocationX(), obj->getLocationY(), obj->getHexImg(), OLED_COLOR_NORMAL);
+		oled->OLED_DrawImage(obj->getLocationX(), obj->getLocationY(), obj->getHexImg(), OLED_COLOR_NORMAL, COVER);
 	}
 	for(GameObj* obj : foregroundObjs){
-		oled->OLED_DrawImage(obj->getLocationX(), obj->getLocationY(), obj->getHexImg(), OLED_COLOR_NORMAL);
+		oled->OLED_DrawImage(obj->getLocationX(), obj->getLocationY(), obj->getHexImg(), OLED_COLOR_NORMAL, OVERLAY);
 	}
 }
 
@@ -36,16 +36,18 @@ void LogicCore::checkAll(){
 
 	//百分之20的概率生成一朵云
 	if(rand->withXPercentProbability(20)){
-		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(2, 4)), STATIC};
+		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(3, 4)), STATIC};
 		uint8_t loc[2] = {OLED_COLUMN, static_cast<uint8_t>(rand->getRandomInt16(8, 20))};
 		Cloud *cloud = new Cloud(loc, speed);
 		backgroundObjs.push_back(cloud);
 	}
-	//百分之20的概率生成一个仙人掌
-	if(rand->withXPercentProbability(20)){
-		SPEED_MODE speed[2] = {static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC};
-		uint8_t loc[2] = {OLED_COLUMN, 40};
-		Cactus *cactus = new Cactus(loc, speed);
+	//百分之50的概率生成一个仙人掌
+	if(rand->withXPercentProbability(50)){
+		Cactus *cactus = new Cactus();
 		foregroundObjs.push_back(cactus);
+	}
+	//百分之50的概率变速
+	if(rand->withXPercentProbability(50)){
+		Cactus::setSpeedALL(static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC);
 	}
 }

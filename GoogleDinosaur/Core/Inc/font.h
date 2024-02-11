@@ -42,5 +42,6 @@ typedef struct Image {
 
 extern const Image cloudImg;
 extern const Image cactusImg;
+extern const Image dino1Img;
 
 #endif // __FONT_H
