@@ -8,9 +8,11 @@
 #ifndef INC_GAME_HPP_
 #define INC_GAME_HPP_
 
-#include "font.h"
+
+#include <animation.hpp>
 #include <cmath>
 #include <list>
+#include <map>
 
 #define TIME_STEP_MS 10
 
@@ -54,8 +56,11 @@ public:
 		current_loc[0] = x;
 		current_loc[1] = y;
 	}
-	inline virtual void setSpeed(SPEED_MODE speed_x, SPEED_MODE speed_y){
+
+	inline virtual void setSpeedX(SPEED_MODE speed_x){
 		speed[0] = speed_x;
+	}
+	inline virtual void setSpeedY(SPEED_MODE speed_y){
 		speed[1] = speed_y;
 	}
 
@@ -74,12 +79,25 @@ public:
 	void recalcuProperties();
 };
 
+class GameObjWithAnim : public GameObj{
+protected:
+	Animation* Anim = nullptr;
+	void addAnim(Animation* anim);
+public:
+	virtual const Image* getHexImg() override{
+		return Anim->getHexFrame();
+	}
+	void setAnimInterval(uint8_t interval);
+	void setAnimStatus(ANIM_STATUS status);
+};
+
 class Cloud : public GameObj{
 public:
 	Cloud(uint8_t* loc, SPEED_MODE* speed){
 		initProperties();
 		setLocation(loc[0], loc[1]);
-		setSpeed(speed[0], speed[1]);
+		setSpeedX(speed[0]);
+		setSpeedY(speed[1]);
 	}
 
 	inline const Image* getHexImg() override{
@@ -100,26 +118,27 @@ public:
 	}
 
 	void takeMove(uint8_t axisIndex) override;
-	inline void setSpeed(SPEED_MODE speed_x, SPEED_MODE speed_y) override{
-		// do nothing
-	}
+
 	static void setSpeedALL(SPEED_MODE speed_x, SPEED_MODE speed_y){
 		Cactus::speed[0] = speed_x;
 		Cactus::speed[1] = speed_y;
 	}
 };
 
-class Dino : public GameObj{
+class Dino : public GameObjWithAnim{
 public:
 	Dino(){
+		Anim = new Animation(&dino1Img, &dino2Img);
+		setAnimInterval(15);
+		setAnimStatus(PLAY);
+
 		initProperties();
 		setLocation(3, 64-height);
-		setSpeed(STATIC, STATIC);
+		setSpeedX(STATIC);
+		setSpeedY(STATIC);
 	}
 
-	inline const Image* getHexImg() override{
-		return &dino1Img;
-	}
+	void jumpUp();
 };
 
 #endif /* INC_GAME_HPP_ */

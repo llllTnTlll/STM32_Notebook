@@ -13,6 +13,7 @@
 #include "random.hpp"
 #include <string>
 #include <algorithm>
+#include <memory>
 
 class LogicCore{
 private:
@@ -20,8 +21,8 @@ private:
 	SSD1315 *oled;
 
 	// 容器
-	std::vector<GameObj*> backgroundObjs;    //背景物体容器（不参与碰撞运算）
-	std::vector<GameObj*> foregroundObjs;    //关键物体容器
+	std::vector<std::shared_ptr<GameObj>> backgroundObjs;    //背景物体容器（不参与碰撞运算）
+	std::vector<std::shared_ptr<GameObj>> foregroundObjs;    //关键物体容器
 
 	// 随机数生成引擎
     Random *rand;
@@ -31,7 +32,7 @@ public:
 		oled = new SSD1315(PAGE_MODE);
 		rand = new Random();
 
-		Dino *dino = new Dino();
+		std::shared_ptr<Dino> dino(new Dino());
 		foregroundObjs.push_back(dino);
 	}
 

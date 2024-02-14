@@ -54,6 +54,16 @@ void GameObj::takeMove(uint8_t axisIndex){
 	}
 }
 
+void GameObjWithAnim::setAnimInterval(uint8_t interval){
+	if(Anim != nullptr)
+		Anim->setInterval(interval);
+}
+
+void GameObjWithAnim::setAnimStatus(ANIM_STATUS status){
+	if(Anim != nullptr)
+		Anim->setStatus(status);
+}
+
 SPEED_MODE Cactus::speed[2] = {NEGATIVE_SLOW, STATIC};
 
 void Cactus::takeMove(uint8_t axisIndex){
@@ -63,4 +73,8 @@ void Cactus::takeMove(uint8_t axisIndex){
 	    	current_loc[axisIndex] += node.step;
 	    }
 	}
+}
+
+void Dino::jumpUp(){
+
 }
