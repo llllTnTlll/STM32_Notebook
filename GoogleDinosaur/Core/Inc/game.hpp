@@ -91,6 +91,16 @@ public:
 	void setAnimStatus(ANIM_STATUS status);
 };
 
+class GameObjWith2A : public GameObjWithAnim{
+protected:
+	std::map<int, SPEED_MODE> ActionKeyFrame;
+	uint8_t actionFrameCount = 0;
+	uint8_t actionFrameTotal = 0;
+public:
+	virtual void takeMove(uint8_t axisIndex) override;
+
+};
+
 class Cloud : public GameObj{
 public:
 	Cloud(uint8_t* loc, SPEED_MODE* speed){
