@@ -44,5 +44,6 @@ extern const Image cloudImg;
 extern const Image cactusImg;
 extern const Image dino1Img;
 extern const Image dino2Img;
+extern const Image groundImg;
 
 #endif // __FONT_H

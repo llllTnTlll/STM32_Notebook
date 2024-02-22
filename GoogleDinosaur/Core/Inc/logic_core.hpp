@@ -15,6 +15,8 @@
 #include <algorithm>
 #include <memory>
 
+extern SPEED_MODE GAME_SPEED[2];
+
 class LogicCore{
 private:
 	// 外挂硬件
@@ -23,6 +25,7 @@ private:
 	// 容器
 	std::vector<std::shared_ptr<GameObj>> backgroundObjs;    //背景物体容器（不参与碰撞运算）
 	std::vector<std::shared_ptr<GameObj>> foregroundObjs;    //关键物体容器
+	std::shared_ptr<Dino> mainCharactor;                     //主控角色
 
 	// 随机数生成引擎
     Random *rand;
@@ -33,7 +36,10 @@ public:
 		rand = new Random();
 
 		std::shared_ptr<Dino> dino(new Dino());
-		foregroundObjs.push_back(dino);
+		mainCharactor = dino;
+
+		std::shared_ptr<Ground> ground(new Ground());
+		backgroundObjs.push_back(ground);
 	}
 
 	void renewAll();    //将容器中的所有对象的加速度速度以及位置更新至下一帧状态
@@ -48,6 +54,11 @@ public:
 	}
 	inline void updateFrameRate(){
 		oled->UpdateFrameRate();
+	}
+
+	inline void setGameSpeed(SPEED_MODE speedX, SPEED_MODE speedY){
+		GAME_SPEED[0] = speedX;
+		GAME_SPEED[1] = speedY;
 	}
 };
 

@@ -17,14 +17,10 @@
 #include <vector>
 #include "i2c.h"
 #include "font.h"
+#include "global.h"
 
 // OLED器件地址
 #define OLED_ADDRESS 0x78
-
-// OLED参数
-#define OLED_PAGE 8            // OLED页数
-#define OLED_ROW 8 * OLED_PAGE // OLED行数
-#define OLED_COLUMN 128        // OLED列数
 
 extern bool IsDMAAvailable;
 

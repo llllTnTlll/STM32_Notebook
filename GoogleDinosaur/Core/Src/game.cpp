@@ -6,13 +6,15 @@
  */
 #include "game.hpp"
 
+SPEED_MODE GAME_SPEED[2] = {NEGATIVE_SLOW, STATIC};
+
 std::list<GameObj::speedNode> GameObj::SPEED = {
 		{NEGATIVE_SUPER_FAST,1,-3},
 		{NEGATIVE_FAST,1,-2},
 		{NEGATIVE_NORMAL,1,-1},
 		{NEGATIVE_SLOW,2,-1},
 		{NEGATIVE_SUPER_SLOW,3,-1},
-		{STATIC, 255, 0},
+		{STATIC, 1, 0},
 		{POSITIVE_SUPER_SLOW,3,1},
 		{POSITIVE_SLOW,2,1},
 		{POSITIVE_NORMAL,1,1},
@@ -46,12 +48,56 @@ void GameObj::recalcuProperties(){
 }
 
 void GameObj::takeMove(uint8_t axisIndex){
+	// 加速度是否计算
+	if(shouldCacuAcc){
+		accIntervalCount[0]--;
+		accIntervalCount[1]--;
+		if(accIntervalCount[0] == 0)
+			speedUpDown(0);
+		if(accIntervalCount[1] == 0)
+			speedUpDown(1);
+	}
+
 	for (const auto& node : SPEED) {
 		if (node.mode == static_cast<SPEED_MODE>(speed[axisIndex])){
+			// 重设刷新间隔
 			currentInterval[axisIndex] = node.interval;
 			current_loc[axisIndex] += node.step;
 		}
 	}
+}
+
+void GameObj::speedUpDown(uint8_t axisIndex){
+	// 获取指向当前速度的迭代器
+	auto it = std::find_if(SPEED.begin(), SPEED.end(), [this, axisIndex](const speedNode& node) {
+	        return node.mode == this->speed[axisIndex];
+	});
+	if(it!=SPEED.end()){
+		for(uint8_t i=0; i < std::abs(accStep[axisIndex]); i++){
+			if(accStep[axisIndex] > 0 && std::next(it) != SPEED.end())
+				it++;
+			if(accStep[axisIndex] < 0 && std::prev(it) != SPEED.begin())
+				it--;
+		}
+		speed[axisIndex] = it->mode;
+	}
+	// 重设间隔
+	accIntervalCount[axisIndex] = accInterval[axisIndex];
+}
+
+void GameObj::resetAccSys(){
+	shouldCacuAcc = false;
+	accStep[0] = 0;
+	accStep[1] = 0;
+
+	accInterval[0] = 1;
+	accInterval[1] = 1;
+
+	accIntervalCount[0] = 1;
+	accIntervalCount[1] = 1;
+
+	setSpeedX(STATIC);
+	setSpeedY(STATIC);
 }
 
 void GameObjWithAnim::setAnimInterval(uint8_t interval){
@@ -64,17 +110,73 @@ void GameObjWithAnim::setAnimStatus(ANIM_STATUS status){
 		Anim->setStatus(status);
 }
 
-SPEED_MODE Cactus::speed[2] = {NEGATIVE_SLOW, STATIC};
-
-void Cactus::takeMove(uint8_t axisIndex){
+void Ground::takeMove(uint8_t axisIndex){
 	for (const auto& node : SPEED) {
-	    if (node.mode == static_cast<SPEED_MODE>(Cactus::speed[axisIndex])){
+	    if (node.mode == static_cast<SPEED_MODE>(GAME_SPEED[axisIndex])){
 	    	currentInterval[axisIndex] = node.interval;
 	    	current_loc[axisIndex] += node.step;
 	    }
 	}
 }
 
-void Dino::jumpUp(){
-
+void Cactus::takeMove(uint8_t axisIndex){
+	for (const auto& node : SPEED) {
+	    if (node.mode == static_cast<SPEED_MODE>(GAME_SPEED[axisIndex])){
+	    	currentInterval[axisIndex] = node.interval;
+	    	current_loc[axisIndex] += node.step;
+	    }
+	}
 }
+
+void Dino::takeMove(uint8_t axisIndex){
+	// 加速度是否计算
+	if(shouldCacuAcc){
+		accIntervalCount[0]--;
+		accIntervalCount[1]--;
+		if(accIntervalCount[0] == 0)
+			speedUpDown(0);
+		if(accIntervalCount[1] == 0)
+			speedUpDown(1);
+	}
+
+	for (const auto& node : SPEED) {
+		if (node.mode == static_cast<SPEED_MODE>(speed[axisIndex])){
+			// 重设刷新间隔
+			currentInterval[axisIndex] = node.interval;
+			// 限制y轴刷新范围
+			if(axisIndex == 1){
+				// 向上超出边界
+				uint8_t expected = current_loc[axisIndex] + node.step;
+//				if(expected > OLED_ROW){
+//					setLocation(getLocationX(), 0);
+//					fallDown();
+//					return;
+//				}
+				// 向下超出边界
+				if(expected > OLED_ROW-height && speed[1] > 5){
+					current_loc[axisIndex] = OLED_ROW-height;
+					resetAccSys();
+					isJumping = false;
+					return;
+				}
+			}
+			current_loc[axisIndex] += node.step;
+		}
+	}
+}
+
+//void Dino::fallDown(){
+//	setSpeedY(STATIC);
+//	accIntervalCount[1] = 1;
+//	accStep[1] = 1;
+//	accInterval[1] = 7;
+//}
+
+void Dino::jumpUp(){
+	isJumping = true;
+	shouldCacuAcc = true;
+	setSpeedY(NEGATIVE_SUPER_FAST);
+	accStep[1] = 1;
+	accInterval[1] = 15;
+}
+

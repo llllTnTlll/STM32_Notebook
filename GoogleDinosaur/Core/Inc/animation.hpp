@@ -17,7 +17,7 @@ typedef enum{
 }ANIM_STATUS;
 
 class Animation{
-private:
+protected:
 	std::vector<const Image*> FrameData;
 	uint8_t TotalFrame = 0;
 	uint8_t FrameNow = 0;

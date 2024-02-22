@@ -9,26 +9,17 @@
 #define INC_GAME_HPP_
 
 
-#include <animation.hpp>
+#include "animation.hpp"
+#include "global.h"
 #include <cmath>
 #include <list>
+#include <algorithm>
 #include <map>
 
 #define TIME_STEP_MS 10
 
-enum SPEED_MODE{
-	NEGATIVE_SUPER_FAST,
-	NEGATIVE_FAST,
-	NEGATIVE_NORMAL,
-	NEGATIVE_SLOW,
-	NEGATIVE_SUPER_SLOW,
-	STATIC,
-	POSITIVE_SUPER_SLOW,
-	POSITIVE_SLOW,
-	POSITIVE_NORMAL,
-	POSITIVE_FAST,
-	POSITIVE_SUPER_FAST,
-};
+extern SPEED_MODE GAME_SPEED[2];
+
 class GameObj{
 protected:
 	// 基本属性
@@ -48,9 +39,17 @@ protected:
 	};
 	static std::list<speedNode> SPEED;
 
-	void updateReclaimFlag();
+	// 加速度相关
+	bool shouldCacuAcc = false;
+	int8_t accStep[2] = {0, 0};
+	uint8_t accInterval[2] = {10, 10};
+	uint8_t accIntervalCount[2] = {1, 1};
+
+	virtual void updateReclaimFlag();
 	void initProperties();
 	virtual void takeMove(uint8_t axisIndex);
+	void speedUpDown(uint8_t axisIndex);
+	void resetAccSys();
 public:
 	inline void setLocation(uint8_t x, uint8_t y){
 		current_loc[0] = x;
@@ -64,6 +63,7 @@ public:
 		speed[1] = speed_y;
 	}
 
+
 	inline uint8_t getLocationX(){
 		return current_loc[0];
 	}
@@ -76,13 +76,12 @@ public:
 	inline virtual const Image* getHexImg(){
 		return &cloudImg;
 	}
-	void recalcuProperties();
+	virtual void recalcuProperties();
 };
 
 class GameObjWithAnim : public GameObj{
 protected:
 	Animation* Anim = nullptr;
-	void addAnim(Animation* anim);
 public:
 	virtual const Image* getHexImg() override{
 		return Anim->getHexFrame();
@@ -91,14 +90,23 @@ public:
 	void setAnimStatus(ANIM_STATUS status);
 };
 
-class GameObjWith2A : public GameObjWithAnim{
-protected:
-	std::map<int, SPEED_MODE> ActionKeyFrame;
-	uint8_t actionFrameCount = 0;
-	uint8_t actionFrameTotal = 0;
+class Ground : public GameObj{
 public:
-	virtual void takeMove(uint8_t axisIndex) override;
+	Ground(){
+		height = 5;
+		width = 255;
+		setLocation(0, OLED_ROW-height);
+	}
+	inline const Image* getHexImg() override{
+		return &groundImg;
+	}
 
+	void updateReclaimFlag() override{
+		// 永不销毁
+		shouldReclaim = false;
+	}
+
+	void takeMove(uint8_t axisIndex) override;
 };
 
 class Cloud : public GameObj{
@@ -116,8 +124,6 @@ public:
 };
 
 class Cactus : public GameObj{
-private:
-	static SPEED_MODE speed[2];
 public:
 	Cactus(){
 		initProperties();
@@ -129,26 +135,26 @@ public:
 
 	void takeMove(uint8_t axisIndex) override;
 
-	static void setSpeedALL(SPEED_MODE speed_x, SPEED_MODE speed_y){
-		Cactus::speed[0] = speed_x;
-		Cactus::speed[1] = speed_y;
-	}
 };
 
 class Dino : public GameObjWithAnim{
+private:
+	bool isJumping = false;
 public:
 	Dino(){
 		Anim = new Animation(&dino1Img, &dino2Img);
 		setAnimInterval(15);
 		setAnimStatus(PLAY);
-
 		initProperties();
-		setLocation(3, 64-height);
-		setSpeedX(STATIC);
-		setSpeedY(STATIC);
-	}
 
+		setLocation(0, OLED_ROW-height);
+	}
 	void jumpUp();
+	void fallDown();
+	void takeMove(uint8_t axisIndex) override;
+	inline bool getJumpFlag(){
+		return isJumping;
+	}
 };
 
 #endif /* INC_GAME_HPP_ */

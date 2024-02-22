@@ -14,6 +14,7 @@ void LogicCore::renewAll(){
 	for(const std::shared_ptr<GameObj>& obj : foregroundObjs){
 		obj->recalcuProperties();
 	}
+	mainCharactor->recalcuProperties();
 }
 
 void LogicCore::drawAll(){
@@ -23,6 +24,7 @@ void LogicCore::drawAll(){
 	for(const std::shared_ptr<GameObj>& obj : foregroundObjs){
 		oled->OLED_DrawImage(obj->getLocationX(), obj->getLocationY(), obj->getHexImg(), OLED_COLOR_NORMAL, OVERLAY);
 	}
+	oled->OLED_DrawImage(mainCharactor->getLocationX(), mainCharactor->getLocationY(), mainCharactor->getHexImg(), OLED_COLOR_NORMAL, OVERLAY);
 }
 
 void LogicCore::checkAll(){
@@ -48,6 +50,12 @@ void LogicCore::checkAll(){
 	}
 	//百分之50的概率变速
 	if(rand->withXPercentProbability(50)){
-		Cactus::setSpeedALL(static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC);
+		setGameSpeed(static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC);
+	}
+
+	//百分之50跳跃
+	if(rand->withXPercentProbability(50)){
+		if(!mainCharactor->getJumpFlag())
+			mainCharactor->jumpUp();
 	}
 }
