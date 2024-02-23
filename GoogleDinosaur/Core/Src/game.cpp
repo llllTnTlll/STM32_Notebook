@@ -105,9 +105,14 @@ void GameObjWithAnim::setAnimInterval(uint8_t interval){
 		Anim->setInterval(interval);
 }
 
-void GameObjWithAnim::setAnimStatus(ANIM_STATUS status){
+void GameObjWithAnim::setAnimStatus(AnimPlayStatus status){
 	if(Anim != nullptr)
 		Anim->setStatus(status);
+}
+
+void GameObjWithAnim::setAnimTo(uint8_t index){
+	if(Anim != nullptr)
+		Anim->AnimSwichTo(index);
 }
 
 void Ground::takeMove(uint8_t axisIndex){
@@ -153,10 +158,11 @@ void Dino::takeMove(uint8_t axisIndex){
 //					return;
 //				}
 				// 向下超出边界
-				if(expected > OLED_ROW-height && speed[1] > 5){
+				if(expected > GROUND_Y && speed[1] > 5){
 					current_loc[axisIndex] = OLED_ROW-height;
 					resetAccSys();
 					isJumping = false;
+					setAnimTo(DINO_RUN);
 					return;
 				}
 			}
@@ -173,10 +179,13 @@ void Dino::takeMove(uint8_t axisIndex){
 //}
 
 void Dino::jumpUp(){
-	isJumping = true;
-	shouldCacuAcc = true;
-	setSpeedY(NEGATIVE_SUPER_FAST);
-	accStep[1] = 1;
-	accInterval[1] = 15;
+	if(!isJumping){
+		setAnimTo(DINO_JUMP);
+		isJumping = true;
+		shouldCacuAcc = true;
+		setSpeedY(NEGATIVE_SUPER_FAST);
+		accStep[1] = 1;
+		accInterval[1] = 15;
+	}
 }
 

@@ -60,6 +60,10 @@ public:
 		GAME_SPEED[0] = speedX;
 		GAME_SPEED[1] = speedY;
 	}
+
+	inline void charactorJump(){
+		mainCharactor->jumpUp();
+	}
 };
 
 #endif /* INC_LOGIC_CORE_HPP_ */

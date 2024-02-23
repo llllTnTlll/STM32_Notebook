@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "logic_core.hpp"
+#include "delay.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -74,6 +75,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	}
 }
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == Button_A_Pin){
+		delayUSecs(10);
+		if(HAL_GPIO_ReadPin(Button_A_GPIO_Port, Button_A_Pin) == GPIO_PIN_SET){
+			core->charactorJump();
+		}
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -111,6 +121,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   core = new LogicCore();
+  initDelay();
   /* USER CODE END 2 */
 
   /* Infinite loop */

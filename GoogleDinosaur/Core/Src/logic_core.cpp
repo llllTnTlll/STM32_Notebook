@@ -52,10 +52,4 @@ void LogicCore::checkAll(){
 	if(rand->withXPercentProbability(50)){
 		setGameSpeed(static_cast<SPEED_MODE>(rand->getRandomInt16(0, 4)), STATIC);
 	}
-
-	//百分之50跳跃
-	if(rand->withXPercentProbability(50)){
-		if(!mainCharactor->getJumpFlag())
-			mainCharactor->jumpUp();
-	}
 }

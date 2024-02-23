@@ -17,6 +17,7 @@
 #include <map>
 
 #define TIME_STEP_MS 10
+#define GROUND_Y 38
 
 extern SPEED_MODE GAME_SPEED[2];
 
@@ -87,7 +88,8 @@ public:
 		return Anim->getHexFrame();
 	}
 	void setAnimInterval(uint8_t interval);
-	void setAnimStatus(ANIM_STATUS status);
+	void setAnimStatus(AnimPlayStatus status);
+	void setAnimTo(uint8_t index);
 };
 
 class Ground : public GameObj{
@@ -142,12 +144,9 @@ private:
 	bool isJumping = false;
 public:
 	Dino(){
-		Anim = new Animation(&dino1Img, &dino2Img);
-		setAnimInterval(15);
-		setAnimStatus(PLAY);
+		Anim = new DinoAnim();
 		initProperties();
-
-		setLocation(0, OLED_ROW-height);
+		setLocation(0, GROUND_Y);
 	}
 	void jumpUp();
 	void fallDown();

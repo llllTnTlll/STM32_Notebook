@@ -57,6 +57,9 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Button_A_Pin GPIO_PIN_1
+#define Button_A_GPIO_Port GPIOA
+#define Button_A_EXTI_IRQn EXTI1_IRQn
 
 /* USER CODE BEGIN Private defines */
 
