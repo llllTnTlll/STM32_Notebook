@@ -1,0 +1,97 @@
+new:174:33:void* operator new(std::size_t, void*)	1
+stl_list.h:109:7:std::__detail::_List_node_header::_List_node_header()	1
+stl_list.h:149:7:void std::__detail::_List_node_header::_M_init()	1
+gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	1
+game.hpp:42:3:GameObj::speedNode::speedNode(SPEED_MODE, uint8_t, int8_t)	1
+game.hpp:67:22:virtual void GameObj::setSpeedX(SPEED_MODE)	1
+game.hpp:70:22:virtual void GameObj::setSpeedY(SPEED_MODE)	1
+game.hpp:84:30:virtual const Image* GameObj::getHexImg()	1
+game.hpp:94:23:virtual const Image* GameObjWithAnim::getHexImg()	1
+game.hpp:110:22:virtual const Image* Ground::getHexImg()	1
+game.hpp:114:7:virtual void Ground::updateReclaimFlag()	1
+game.hpp:144:22:virtual const Image* Cactus::getHexImg()	1
+stl_list.h:827:7:std::__cxx11::list<_Tp, _Alloc>::~list() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+game.cpp:26:6:virtual void GameObj::updateReclaimFlag()	3
+game.cpp:32:6:void GameObj::initProperties()	1
+game.cpp:37:6:virtual void GameObj::recalcuProperties()	4
+game.cpp:50:6:virtual void GameObj::takeMove(uint8_t)	6
+game.cpp:72:53:GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)>	1
+game.cpp:70:6:void GameObj::speedUpDown(uint8_t)	9
+game.cpp:88:6:void GameObj::resetAccSys()	1
+game.cpp:103:6:void GameObjWithAnim::setAnimInterval(uint8_t)	2
+game.cpp:108:6:void GameObjWithAnim::setAnimStatus(AnimPlayStatus)	2
+game.cpp:113:6:void GameObjWithAnim::setAnimTo(uint8_t)	2
+game.cpp:118:6:virtual void Ground::takeMove(uint8_t)	3
+game.cpp:127:6:virtual void Cactus::takeMove(uint8_t)	3
+game.cpp:136:6:virtual void Dino::takeMove(uint8_t)	9
+game.cpp:181:6:void Dino::jumpUp()	2
+allocator.h:164:7:std::allocator< <template-parameter-1-1> >::allocator() [with _Tp = GameObj::speedNode]	1
+allocator.h:182:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = GameObj::speedNode]	1
+stl_list.h:758:7:std::__cxx11::list<_Tp, _Alloc>::list(std::initializer_list<_Tp>, const allocator_type&) [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+stl_list.h:374:14:std::__cxx11::_List_base<GameObj::speedNode, std::allocator<GameObj::speedNode> >::_List_impl::~_List_impl()	1
+stl_list.h:498:7:std::__cxx11::_List_base<_Tp, _Alloc>::~_List_base() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+stl_list.h:945:7:std::__cxx11::list<_Tp, _Alloc>::iterator std::__cxx11::list<_Tp, _Alloc>::begin() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+stl_list.h:963:7:std::__cxx11::list<_Tp, _Alloc>::iterator std::__cxx11::list<_Tp, _Alloc>::end() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+stl_list.h:252:7:bool std::operator!=(const _Self&, const _Self&)	1
+stl_list.h:217:7:std::_List_iterator< <template-parameter-1-1> >::_Self& std::_List_iterator< <template-parameter-1-1> >::operator++() [with _Tp = GameObj::speedNode]	1
+stl_list.h:209:7:_Tp& std::_List_iterator< <template-parameter-1-1> >::operator*() const [with _Tp = GameObj::speedNode]	1
+stl_algo.h:3925:5:_IIter std::find_if(_IIter, _IIter, _Predicate) [with _IIter = std::_List_iterator<GameObj::speedNode>; _Predicate = GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)>]	1
+stl_iterator_base_funcs.h:213:5:_InputIterator std::next(_InputIterator, typename std::iterator_traits<_Iter>::difference_type) [with _InputIterator = std::_List_iterator<GameObj::speedNode>]	1
+stl_list.h:224:7:std::_List_iterator< <template-parameter-1-1> >::_Self std::_List_iterator< <template-parameter-1-1> >::operator++(int) [with _Tp = GameObj::speedNode]	1
+stl_iterator_base_funcs.h:224:5:_BidirectionalIterator std::prev(_BidirectionalIterator, typename std::iterator_traits<_Iter>::difference_type) [with _BidirectionalIterator = std::_List_iterator<GameObj::speedNode>]	1
+stl_list.h:239:7:std::_List_iterator< <template-parameter-1-1> >::_Self std::_List_iterator< <template-parameter-1-1> >::operator--(int) [with _Tp = GameObj::speedNode]	1
+stl_list.h:213:7:_Tp* std::_List_iterator< <template-parameter-1-1> >::operator->() const [with _Tp = GameObj::speedNode]	1
+new_allocator.h:79:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = GameObj::speedNode]	1
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = GameObj::speedNode]	1
+allocator.h:177:2:std::allocator< <template-parameter-1-1> >::allocator(const std::allocator<_Tp1>&) [with _Tp1 = GameObj::speedNode; _Tp = std::_List_node<GameObj::speedNode>]	1
+allocator.h:182:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = std::_List_node<GameObj::speedNode>]	1
+stl_list.h:488:7:std::__cxx11::_List_base<_Tp, _Alloc>::_List_base(std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_type&&) [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+initializer_list:75:7:constexpr const _E* std::initializer_list<_E>::begin() const [with _E = GameObj::speedNode]	1
+initializer_list:79:7:constexpr const _E* std::initializer_list<_E>::end() const [with _E = GameObj::speedNode]	1
+stl_list.h:1835:2:void std::__cxx11::list<_Tp, _Alloc>::_M_initialize_dispatch(_InputIterator, _InputIterator, std::__false_type) [with _InputIterator = const GameObj::speedNode*; _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	2
+list.tcc:66:5:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_clear() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	2
+stl_list.h:200:7:std::_List_iterator< <template-parameter-1-1> >::_List_iterator(std::__detail::_List_node_base*) [with _Tp = GameObj::speedNode]	1
+stl_list.h:170:18:_Tp* std::_List_node<_Tp>::_M_valptr() [with _Tp = GameObj::speedNode]	1
+predefined_ops.h:322:5:__gnu_cxx::__ops::_Iter_pred<_Predicate> __gnu_cxx::__ops::__pred_iter(_Predicate) [with _Predicate = GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)>]	1
+stl_algobase.h:1972:5:_Iterator std::__find_if(_Iterator, _Iterator, _Predicate) [with _Iterator = std::_List_iterator<GameObj::speedNode>; _Predicate = __gnu_cxx::__ops::_Iter_pred<GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)> >]	1
+stl_iterator_base_funcs.h:202:5:void std::advance(_InputIterator&, _Distance) [with _InputIterator = std::_List_iterator<GameObj::speedNode>; _Distance = int]	1
+new_allocator.h:79:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = std::_List_node<GameObj::speedNode>]	1
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = std::_List_node<GameObj::speedNode>]	1
+move.h:101:5:constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&) [with _Tp = std::allocator<std::_List_node<GameObj::speedNode> >&]	1
+stl_list.h:395:2:std::__cxx11::_List_base<_Tp, _Alloc>::_List_impl::_List_impl(std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_type&&) [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+initializer_list:71:7:constexpr std::initializer_list<_E>::size_type std::initializer_list<_E>::size() const [with _E = GameObj::speedNode]	1
+stl_list.h:1225:2:) [with _Args = {const GameObj::speedNode&}; _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+stl_list.h:452:7:std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_type& std::__cxx11::_List_base<_Tp, _Alloc>::_M_get_Node_allocator() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+alloc_traits.h:527:2:static void std::allocator_traits<std::allocator<_Tp1> >::destroy(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, _Up*) [with _Up = GameObj::speedNode; _Tp = std::_List_node<GameObj::speedNode>]	1
+stl_list.h:445:7:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_put_node(typename std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_traits::pointer) [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+aligned_buffer.h:72:7:_Tp* __gnu_cxx::__aligned_membuf<_Tp>::_M_ptr() [with _Tp = GameObj::speedNode]	1
+move.h:101:5:constexpr typename std::remove_reference<_Tp>::type&& std::move(_Tp&&) [with _Tp = GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)>&]	1
+predefined_ops.h:308:7:__gnu_cxx::__ops::_Iter_pred<_Predicate>::_Iter_pred(_Predicate) [with _Predicate = GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)>]	1
+stl_iterator_base_types.h:238:5:constexpr typename std::iterator_traits< <template-parameter-1-1> >::iterator_category std::__iterator_category(const _Iter&) [with _Iter = std::_List_iterator<GameObj::speedNode>]	1
+stl_algobase.h:1909:5:_InputIterator std::__find_if(_InputIterator, _InputIterator, _Predicate, std::input_iterator_tag) [with _InputIterator = std::_List_iterator<GameObj::speedNode>; _Predicate = __gnu_cxx::__ops::_Iter_pred<GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)> >]	4
+stl_iterator_base_funcs.h:158:5:constexpr void std::__advance(_BidirectionalIterator&, _Distance, std::bidirectional_iterator_tag) [with _BidirectionalIterator = std::_List_iterator<GameObj::speedNode>; _Distance = int]	4
+allocator.h:167:7:std::allocator< <template-parameter-1-1> >::allocator(const std::allocator< <template-parameter-1-1> >&) [with _Tp = std::_List_node<GameObj::speedNode>]	1
+move.h:76:5:constexpr _Tp&& std::forward(typename std::remove_reference<_Tp>::type&) [with _Tp = const GameObj::speedNode&]	1
+stl_list.h:1909:8:) [with _Args = {const GameObj::speedNode&}; _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+new_allocator.h:160:2:void __gnu_cxx::new_allocator<_Tp>::destroy(_Up*) [with _Up = GameObj::speedNode; _Tp = std::_List_node<GameObj::speedNode>]	1
+alloc_traits.h:491:7:static void std::allocator_traits<std::allocator<_Tp1> >::deallocate(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, std::allocator_traits<std::allocator<_Tp1> >::pointer, std::allocator_traits<std::allocator<_Tp1> >::size_type) [with _Tp = std::_List_node<GameObj::speedNode>]	1
+aligned_buffer.h:64:7:void* __gnu_cxx::__aligned_membuf<_Tp>::_M_addr() [with _Tp = GameObj::speedNode]	1
+predefined_ops.h:315:2:bool __gnu_cxx::__ops::_Iter_pred<_Predicate>::operator()(_Iterator) [with _Iterator = std::_List_iterator<GameObj::speedNode>; _Predicate = GameObj::speedUpDown(uint8_t)::<lambda(const GameObj::speedNode&)>]	1
+stl_list.h:232:7:std::_List_iterator< <template-parameter-1-1> >::_Self& std::_List_iterator< <template-parameter-1-1> >::operator--() [with _Tp = GameObj::speedNode]	1
+new_allocator.h:82:7:__gnu_cxx::new_allocator<_Tp>::new_allocator(const __gnu_cxx::new_allocator<_Tp>&) [with _Tp = std::_List_node<GameObj::speedNode>]	1
+stl_list.h:632:2:) [with _Args = {const GameObj::speedNode&}; _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+stl_list.h:408:12:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_inc_size(std::size_t) [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+new_allocator.h:126:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(_Tp*, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = std::_List_node<GameObj::speedNode>]	1
+stl_list.h:441:7:typename std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_traits::pointer std::__cxx11::_List_base<_Tp, _Alloc>::_M_get_node() [with _Tp = GameObj::speedNode; _Alloc = std::allocator<GameObj::speedNode>]	1
+allocated_ptr.h:52:7:std::__allocated_ptr<_Alloc>::__allocated_ptr(_Alloc&, std::__allocated_ptr<_Alloc>::pointer) [with _Alloc = std::allocator<std::_List_node<GameObj::speedNode> >]	1
+allocated_ptr.h:70:7:std::__allocated_ptr<_Alloc>::~__allocated_ptr() [with _Alloc = std::allocator<std::_List_node<GameObj::speedNode> >]	2
+alloc_traits.h:507:2:) [with _Up = GameObj::speedNode; _Args = {const GameObj::speedNode&}; _Tp = std::_List_node<GameObj::speedNode>]	1
+allocated_ptr.h:78:7:std::__allocated_ptr<_Alloc>& std::__allocated_ptr<_Alloc>::operator=(std::nullptr_t) [with _Alloc = std::allocator<std::_List_node<GameObj::speedNode> >]	1
+alloc_traits.h:459:7:static _Tp* std::allocator_traits<std::allocator<_Tp1> >::allocate(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, std::allocator_traits<std::allocator<_Tp1> >::size_type) [with _Tp = std::_List_node<GameObj::speedNode>]	1
+move.h:49:5:constexpr _Tp* std::__addressof(_Tp&) [with _Tp = std::allocator<std::_List_node<GameObj::speedNode> >]	1
+new_allocator.h:154:2:) [with _Up = GameObj::speedNode; _Args = {const GameObj::speedNode&}; _Tp = std::_List_node<GameObj::speedNode>]	1
+new_allocator.h:103:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new_allocator<_Tp>::size_type, const void*) [with _Tp = std::_List_node<GameObj::speedNode>]	1
+new_allocator.h:191:7:constexpr __gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::_M_max_size() const [with _Tp = std::_List_node<GameObj::speedNode>]	1
+game.cpp:190:1:void __static_initialization_and_destruction_0(int, int)	5
+game.cpp:190:1:cpp)	1
+game.cpp:190:1:cpp)	1

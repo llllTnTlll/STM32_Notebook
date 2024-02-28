@@ -49,6 +49,7 @@
 
 /* USER CODE BEGIN PV */
 LogicCore *core;
+KeyBoard *keyboard;
 
 bool shouldCheck = false;
 bool shouldRefresh = false;
@@ -72,14 +73,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM3){
 		shouldCheck = true;
 		core->updateFrameRate();
+		core->updateTotalScore();
 	}
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(GPIO_Pin == Button_A_Pin){
-		delayUSecs(10);
+		delayUSecs(20);
 		if(HAL_GPIO_ReadPin(Button_A_GPIO_Port, Button_A_Pin) == GPIO_PIN_SET){
-			core->charactorJump();
+			keyboard->keyPressed(KEY_BOARD_A);
 		}
 	}
 }
@@ -120,7 +122,8 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  core = new LogicCore();
+  keyboard = new KeyBoard();
+  core = new LogicCore(keyboard);
   initDelay();
   /* USER CODE END 2 */
 

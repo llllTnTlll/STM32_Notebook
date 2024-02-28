@@ -15,6 +15,7 @@
 #include <list>
 #include <algorithm>
 #include <map>
+#include <string>
 
 #define TIME_STEP_MS 10
 #define GROUND_Y 38
@@ -29,6 +30,8 @@ protected:
 	uint8_t current_loc[2] = {0, 0};
 	uint8_t currentInterval[2] = {1, 1};
 	bool shouldReclaim = false;
+
+	std::string typeName = "GameObj";  //因为禁用动态类型检查所以需要类型标志位
 
 	// 速度相关
 	SPEED_MODE speed[2] = {STATIC, STATIC};
@@ -52,6 +55,10 @@ protected:
 	void speedUpDown(uint8_t axisIndex);
 	void resetAccSys();
 public:
+	inline std::string getObjType(){
+		return typeName;
+	}
+
 	inline void setLocation(uint8_t x, uint8_t y){
 		current_loc[0] = x;
 		current_loc[1] = y;
@@ -64,6 +71,12 @@ public:
 		speed[1] = speed_y;
 	}
 
+	inline uint8_t getHeight(){
+		return height;
+	}
+	inline uint8_t getWidth(){
+		return width;
+	}
 
 	inline uint8_t getLocationX(){
 		return current_loc[0];
@@ -95,6 +108,7 @@ public:
 class Ground : public GameObj{
 public:
 	Ground(){
+		typeName = "Ground";
 		height = 5;
 		width = 255;
 		setLocation(0, OLED_ROW-height);
@@ -114,6 +128,7 @@ public:
 class Cloud : public GameObj{
 public:
 	Cloud(uint8_t* loc, SPEED_MODE* speed){
+		typeName = "Cloud";
 		initProperties();
 		setLocation(loc[0], loc[1]);
 		setSpeedX(speed[0]);
@@ -128,6 +143,7 @@ public:
 class Cactus : public GameObj{
 public:
 	Cactus(){
+		typeName = "Cactus";
 		initProperties();
 		setLocation(128, 64-height);
 	}
@@ -144,6 +160,7 @@ private:
 	bool isJumping = false;
 public:
 	Dino(){
+		typeName = "Dino";
 		Anim = new DinoAnim();
 		initProperties();
 		setLocation(0, GROUND_Y);

@@ -10,7 +10,7 @@ typedef struct ASCIIFont {
 } ASCIIFont;
 
 extern const ASCIIFont afont8x6;
-extern const ASCIIFont afont12x6;
+//extern const ASCIIFont afont12x6;
 extern const ASCIIFont afont16x8;
 extern const ASCIIFont afont24x12;
 

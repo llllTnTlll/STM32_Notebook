@@ -1,0 +1,3 @@
+../Core/Src/delay.c:18:6:initDelay	8	static
+../Core/Src/delay.c:24:6:delayUSecs	24	static
+../Core/Src/delay.c:37:6:delayMSecs	24	static
