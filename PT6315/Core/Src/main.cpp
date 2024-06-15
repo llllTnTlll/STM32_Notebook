@@ -94,6 +94,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   PT6315* driver =new PT6315();
+  driver->PT6315_ShowNums();
   while (1)
   {
 
