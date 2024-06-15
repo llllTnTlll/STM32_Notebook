@@ -96,8 +96,7 @@ int main(void)
   PT6315* driver =new PT6315();
   while (1)
   {
-	  driver->PT6315_Test();
-	  HAL_Delay(2000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

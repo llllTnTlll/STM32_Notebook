@@ -17,16 +17,18 @@
 
 class PT6315{
 private:
-	std::string OUTPUT_BUFFER;  //当前显示内容
+	uint8_t VFD_GRID = 8;
+	uint8_t VFD_SEG = 16;
 
+	void PT6315_SendCMD(uint8_t CMD);
+	void PT6315_SendDTA(uint8_t* sendBuf, uint8_t len);
 	void PT6315_Init();
 public:
 	PT6315(){
 		PT6315_Init();
 	}
-	void PT6315_SendCMD(uint8_t CMD);
-	void PT6315_SendDTA();
 	void PT6315_Test();
+	void PT6315_Clear();
 };
 
 #endif /* INC_PT6315_HPP_ */

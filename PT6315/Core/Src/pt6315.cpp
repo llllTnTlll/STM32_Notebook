@@ -17,7 +17,7 @@
  *
  * b3~b0: 0100 8区域16分隔符
  */
-#define SCAN_MODE_8D20S 0b00001000
+#define SCAN_MODE_8D20S 0b00000010
 
 //command2
 /*
@@ -66,52 +66,44 @@ void PT6315::PT6315_SendCMD(uint8_t CMD){
 	HAL_Delay(10);
 }
 
-void PT6315::PT6315_SendDTA(){
+void PT6315::PT6315_SendDTA(uint8_t* sendBuf, uint8_t len){
 	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_RESET);
 
-	uint8_t cmd3 = 0b11000000;
+	uint8_t cmd3 = SET_ADR_TO_BEGIN;
 	HAL_SPI_Transmit(&hspi2, &cmd3, 1, HAL_MAX_DELAY);
 
-    uint8_t test = 0b11111111;
-	for (int i = 0; i < 12 ; i++){ // test base to 16 segm and 12 grids
-		HAL_SPI_Transmit(&hspi2, &test, sizeof(test), HAL_MAX_DELAY);
-		HAL_SPI_Transmit(&hspi2, &test, sizeof(test), HAL_MAX_DELAY);
-		HAL_SPI_Transmit(&hspi2, &test, sizeof(test), HAL_MAX_DELAY);
-		}
+	for (int i = 0; i < len ; i++){
+		HAL_SPI_Transmit(&hspi2, sendBuf, len, HAL_MAX_DELAY);
+	}
 
 	HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_SET);
 	HAL_Delay(10);
 }
 
 void PT6315::PT6315_Init(){
-//	HAL_Delay(200);
-//	//清空显示寄存器
-//	PT6315_SendCMD(WRITE_DTA_TO_DISPLAY);
-//	PT6315_SendCMD(SET_ADR_TO_BEGIN);
-//	for(int i=0; i<36; i++){
-//		PT6315_SendCMD(0b11111111);
-//	}
-//
-//	//设置显示模式
-//	PT6315_SendCMD(SCAN_MODE_8D20S);
-//	//开启显示
-//	PT6315_SendCMD(DISPLAY_ON_HIGH_LIGHT);
-
 	HAL_Delay(200);
-	PT6315_SendCMD(0b01000000);
-	PT6315_SendCMD(0b11000000);
+	PT6315_Clear();
 
-
-	PT6315_SendCMD(0b00000100);
-	PT6315_SendCMD(0b10001111);
+	PT6315_SendCMD(SCAN_MODE_8D20S);
+	PT6315_SendCMD(DISPLAY_ON_HIGH_LIGHT);
 
 }
 
 void PT6315::PT6315_Test(){
-	PT6315_SendCMD(0b01000000);
-	PT6315_SendDTA();
-	PT6315_SendCMD(0b00000100);
-	PT6315_SendCMD(0b10001111);
+	PT6315_SendCMD(WRITE_DTA_TO_DISPLAY);
+	uint8_t buf[36] = {0};
+	for(int i=0; i<36; i++){
+		buf[i] = 0b11111111;
+	}
+	PT6315_SendDTA(buf, 36);
+	PT6315_SendCMD(SCAN_MODE_8D20S);
+	PT6315_SendCMD(DISPLAY_ON_HIGH_LIGHT);
+}
+
+void PT6315::PT6315_Clear(){
+	PT6315_SendCMD(WRITE_DTA_TO_DISPLAY);
+	uint8_t buf[VFD_GRID*VFD_SEG] = {0};
+	PT6315_SendDTA(buf, 36);
 }
 
 #endif /* SRC_PT6315_C_ */
